@@ -277,20 +277,60 @@ select {
   padding: 6px 8px;
 }
 
-.issue-detail-meta,
-.issue-detail-target {
-  color: var(--text-dim);
+.issue-detail-meta-card {
+  margin-top: 12px;
+  padding: 12px 14px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+}
+
+.issue-detail-meta-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
   font-size: 13px;
-  margin-top: 8px;
+  color: var(--text);
+}
+
+.issue-detail-meta-id {
+  color: var(--text-dim);
+}
+
+.issue-detail-meta-date {
+  margin-top: 4px;
+  color: var(--text-dim);
+}
+
+.issue-detail-target {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid var(--border);
+  font-size: 13px;
+}
+
+.issue-detail-target-label {
+  color: var(--text-dim);
+}
+
+.issue-detail-target-value {
+  color: var(--text);
 }
 
 .issue-detail-body {
   margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
   line-height: 1.6;
 }
 
 .issue-detail-body-empty {
   margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
   color: var(--text-dim);
 }
 
