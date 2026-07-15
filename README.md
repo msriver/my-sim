@@ -11,15 +11,31 @@ Claude Code(`claude` CLI)를 앱에 내장된 터미널에서 바로 띄우는 �
 `claude` CLI가 PATH에 설정되어 있어야 합니다 (Claude Code 실행 버튼을 눌렀을 때 이 CLI를
 그대로 스폰합니다).
 
+### 설치 파일로 설치하기 (Windows)
+
+[Releases](https://github.com/msriver/my-sim/releases) 페이지에서 최신 버전의
+`SIM.Setup.x.x.x.exe`를 받아 실행하면 설치됩니다.
+
+- 관리자 권한 없이 사용자 계정 로컬 경로(`%LOCALAPPDATA%\Programs\SIM`)에 설치되며,
+  설치가 끝나면 자동으로 앱이 한 번 실행됩니다.
+- 이후에는 바탕화면 또는 시작 메뉴의 `SIM` 아이콘으로 실행하면 됩니다.
+- 코드 서명 인증서가 없어 실행 시 Windows SmartScreen 경고가 뜰 수 있습니다 — `추가 정보` →
+  `실행`을 누르면 됩니다.
+- 제거하려면 Windows 설정 → 앱 → 설치된 앱에서 `SIM`을 찾아 제거하거나, 설치 폴더의
+  `Uninstall SIM.exe`를 직접 실행하면 됩니다. 이슈 데이터(`issues/`)나 설정
+  (`.my-sim/config.json`)은 프로젝트 소스 쪽에 저장되므로 앱을 제거해도 영향받지 않습니다.
+
+### 소스에서 직접 실행하기
+
 ```bash
 npm install
 npm run dev
 ```
 
-`npm run dev`를 실행하면 앱 창이 뜹니다. 
-`npm run build`를 실행하면 타입 체크를 수행한 뒤 프로덕션 번들을 out/에 생성합니다. 
-`npm run start`로 그 번들을 미리 볼 수 있습니다. 아직 설치파일(.exe 등)
-패키징은 붙어있지 않습니다.
+`npm run dev`를 실행하면 앱 창이 뜹니다.
+`npm run build`를 실행하면 타입 체크를 수행한 뒤 프로덕션 번들을 out/에 생성합니다.
+`npm run start`로 그 번들을 미리 볼 수 있습니다.
+`npm run dist`를 실행하면 electron-builder로 Windows 설치 파일(NSIS)을 `dist/`에 생성합니다.
 
 ## 사용법
 
