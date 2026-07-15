@@ -188,7 +188,6 @@ select {
 
 .issue-row.selected {
   background: var(--bg-elevated);
-  outline: 1px solid var(--accent);
 }
 
 .issue-row.selected::before {
