@@ -59,3 +59,7 @@ npm run dev
   실제 pty로 대화형 실행
 - **gray-matter** — 이슈 마크다운 파일의 frontmatter 파싱/직렬화
 - **marked** — 이슈 본문 마크다운 렌더링
+
+## License
+
+MIT License — 자세한 내용은 [LICENSE](./LICENSE) 파일을 참고하세요.
