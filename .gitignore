@@ -1,0 +1,9 @@
+node_modules/
+dist/
+out/
+*.log
+*.tsbuildinfo
+.claude/
+.my-sim/
+issues/
+CLAUDE.md
