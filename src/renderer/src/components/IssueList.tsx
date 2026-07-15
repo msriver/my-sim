@@ -62,7 +62,9 @@ export function IssueList({ issues, selectedId, runningIds, onSelect }: Props) {
           <span className={`priority-badge priority-${issue.priority}`}>
             {PRIORITY_LABEL[issue.priority]}
           </span>
-          <span className="issue-status-label">{STATUS_LABEL[issue.status]}</span>
+          <span className={`issue-status-label status-${issue.status}`}>
+            {STATUS_LABEL[issue.status]}
+          </span>
         </li>
       ))}
     </ul>

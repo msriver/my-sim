@@ -48,9 +48,9 @@ export function IssueDetail({
             value={issue.status}
             onChange={(e) => onStatusChange(e.target.value as IssueStatus)}
           >
-            <option value="todo">{STATUS_LABEL.todo}</option>
-            <option value="in-progress">{STATUS_LABEL["in-progress"]}</option>
-            <option value="done">{STATUS_LABEL.done}</option>
+            <option value="todo">🔵 {STATUS_LABEL.todo}</option>
+            <option value="in-progress">🟡 {STATUS_LABEL["in-progress"]}</option>
+            <option value="done">🟢 {STATUS_LABEL.done}</option>
           </select>
           <button onClick={onEdit}>수정</button>
           <button onClick={onDelete}>삭제</button>

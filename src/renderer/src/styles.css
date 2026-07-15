@@ -7,7 +7,7 @@
   --text-dim: #8b8f9c;
   --accent: #5b8def;
   --accent-hover: #77a1f2;
-  --status-todo: #8b8f9c;
+  --status-todo: var(--accent);
   --status-in-progress: #e0b341;
   --status-done: #4caf7d;
   --priority-low: #6b7280;
@@ -211,8 +211,24 @@ select {
 }
 
 .issue-status-label {
-  font-size: 11px;
-  color: var(--text-dim);
+  font-size: 10px;
+  font-weight: 700;
+  padding: 1px 6px;
+  border-radius: 4px;
+  flex-shrink: 0;
+  color: #0b0d12;
+}
+
+.issue-status-label.status-todo {
+  background: var(--status-todo);
+}
+
+.issue-status-label.status-in-progress {
+  background: var(--status-in-progress);
+}
+
+.issue-status-label.status-done {
+  background: var(--status-done);
 }
 
 .running-badge {

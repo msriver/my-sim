@@ -309,9 +309,9 @@ export default function App() {
               onChange={(e) => setStatusFilter(e.target.value as "all" | IssueStatus)}
             >
               <option value="all">전체</option>
-              <option value="todo">TODO</option>
-              <option value="in-progress">IN PROGRESS</option>
-              <option value="done">DONE</option>
+              <option value="todo">🔵 TODO</option>
+              <option value="in-progress">🟡 IN PROGRESS</option>
+              <option value="done">🟢 DONE</option>
             </select>
           </div>
           <IssueList
