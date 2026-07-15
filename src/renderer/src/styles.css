@@ -168,6 +168,18 @@ select {
   padding: 10px 8px;
   border-radius: 6px;
   cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.issue-row::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: transparent;
 }
 
 .issue-row:hover {
@@ -176,7 +188,10 @@ select {
 
 .issue-row.selected {
   background: var(--bg-elevated);
-  outline: 1px solid var(--accent);
+}
+
+.issue-row.selected::before {
+  background: var(--accent);
 }
 
 .issue-row:focus-visible {
