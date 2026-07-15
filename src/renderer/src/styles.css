@@ -476,14 +476,14 @@ select:focus {
 .modal-box {
   background: var(--bg-elevated);
   border: 1px solid var(--border);
-  border-radius: 10px;
+  border-radius: 6px;
   padding: 24px;
   width: 480px;
   max-width: calc(100vw - 48px);
   display: flex;
   flex-direction: column;
   gap: 14px;
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
 }
 
 .modal-box h2 {
