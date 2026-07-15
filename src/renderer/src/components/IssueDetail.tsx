@@ -59,12 +59,22 @@ export function IssueDetail({
           </button>
         </div>
       </div>
-      <div className="issue-detail-meta">
-        [{issue.id}] · 우선순위 {PRIORITY_LABEL[issue.priority]} ·{" "}
-        {new Date(issue.updatedAt).toLocaleString()}
-      </div>
-      <div className="issue-detail-target">
-        대상 프로젝트: {issue.targetProject ?? `${targetProject} (기본값)`}
+      <div className="issue-detail-meta-card">
+        <div className="issue-detail-meta-row">
+          <span className="issue-detail-meta-id">[{issue.id}]</span>
+          <span className="issue-detail-meta-priority">
+            우선순위 {PRIORITY_LABEL[issue.priority]}
+          </span>
+        </div>
+        <div className="issue-detail-meta-row issue-detail-meta-date">
+          {new Date(issue.updatedAt).toLocaleString()}
+        </div>
+        <div className="issue-detail-target">
+          <span className="issue-detail-target-label">대상 프로젝트</span>
+          <span className="issue-detail-target-value">
+            {issue.targetProject ?? `${targetProject} (기본값)`}
+          </span>
+        </div>
       </div>
       {issue.body ? (
         <div className="issue-detail-body" dangerouslySetInnerHTML={{ __html: bodyHtml }} />
