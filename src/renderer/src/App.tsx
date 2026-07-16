@@ -151,6 +151,7 @@ export default function App() {
     console.log(`[ui] 코멘트 등록: "${issue.title}"`);
     await window.api.issues.addComment(issue.id, body);
     await refresh();
+    pushToast(t("app.toast.commentAdded"));
   }
 
   async function handleRun(issue: Issue) {

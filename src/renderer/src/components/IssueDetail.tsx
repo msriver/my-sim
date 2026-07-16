@@ -65,7 +65,14 @@ export function IssueDetail({
           </span>
         </div>
         <div className="issue-detail-meta-row issue-detail-meta-date">
-          {new Date(issue.updatedAt).toLocaleString(dateLocale)}
+          {t("issueDetail.createdAtLabel", {
+            date: new Date(issue.createdAt).toLocaleString(dateLocale),
+          })}
+        </div>
+        <div className="issue-detail-meta-row issue-detail-meta-date">
+          {t("issueDetail.updatedAtLabel", {
+            date: new Date(issue.updatedAt).toLocaleString(dateLocale),
+          })}
         </div>
         {issue.closedAt && (
           <div className="issue-detail-meta-row issue-detail-meta-date">

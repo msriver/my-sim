@@ -46,6 +46,7 @@
       "deleteFailed": "Failed to delete the issue.",
       "deleteBlockedLiveSession": "Cannot delete an issue with a running session. Stop the session first.",
       "runFailed": "Failed to start Claude Code.",
+      "commentAdded": "Comment added.",
       "busySession": "\"{{busyIssueTitle}}\" is already running in the same project. Only one session per project is allowed.",
       "configSaved": "Settings saved."
     },
@@ -70,6 +71,8 @@
     "targetProject": "Target Project",
     "defaultSuffix": "{{targetProject}} (default)",
     "noContent": "(No content)",
+    "createdAtLabel": "Created: {{date}}",
+    "updatedAtLabel": "Updated: {{date}}",
     "closedAtLabel": "Closed: {{date}}"
   },
   "issueComments": {
