@@ -87,3 +87,13 @@ export function killAllSessions(): void {
   for (const session of sessions.values()) session.ptyProcess.kill();
   sessions.clear();
 }
+
+/**
+ * Number of currently live sessions. Main process's `sessions` Map is the single source of
+ * truth for "is anything running" checks (e.g. blocking an update install) - never substitute
+ * renderer-side state like `App.tsx`'s `liveIssueIds`, which has no reconciliation guarantee
+ * against this Map (see CLAUDE.md "Key constraints to preserve").
+ */
+export function liveSessionCount(): number {
+  return sessions.size;
+}

@@ -36,6 +36,29 @@ const api: Api = {
       return () => ipcRenderer.removeListener("pty:exit", listener);
     },
   },
+  app: {
+    getVersion: () => ipcRenderer.invoke("app:getVersion"),
+  },
+  update: {
+    check: () => ipcRenderer.invoke("update:check"),
+    download: () => ipcRenderer.send("update:download"),
+    install: () => ipcRenderer.invoke("update:install"),
+    onProgress: (callback) => {
+      const listener = (_event: Electron.IpcRendererEvent, percent: number) => callback(percent);
+      ipcRenderer.on("update:progress", listener);
+      return () => ipcRenderer.removeListener("update:progress", listener);
+    },
+    onDownloaded: (callback) => {
+      const listener = () => callback();
+      ipcRenderer.on("update:downloaded", listener);
+      return () => ipcRenderer.removeListener("update:downloaded", listener);
+    },
+    onError: (callback) => {
+      const listener = (_event: Electron.IpcRendererEvent, message: string) => callback(message);
+      ipcRenderer.on("update:error", listener);
+      return () => ipcRenderer.removeListener("update:error", listener);
+    },
+  },
 };
 
 contextBridge.exposeInMainWorld("api", api);

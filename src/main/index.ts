@@ -4,6 +4,8 @@ import { join } from "node:path";
 import { registerIssueHandlers } from "./ipc/issues.js";
 import { registerPtyHandlers } from "./ipc/pty.js";
 import { registerConfigHandlers } from "./ipc/config.js";
+import { registerAppHandlers } from "./ipc/app.js";
+import { registerUpdateHandlers } from "./ipc/update.js";
 import { killAllSessions } from "./pty.js";
 import { loadConfig, saveConfig } from "../config.js";
 
@@ -79,10 +81,12 @@ function createWindow(): void {
 
   registerPtyHandlers(win);
   registerConfigHandlers(win);
+  registerUpdateHandlers(win);
 }
 
 app.whenReady().then(async () => {
   registerIssueHandlers();
+  registerAppHandlers();
   await ensureTargetProjectConfigured();
   createWindow();
 

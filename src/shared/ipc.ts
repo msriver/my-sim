@@ -61,8 +61,35 @@ export interface PtyApi {
   onExit(callback: (issueId: string, info: PtyExitInfo) => void): () => void;
 }
 
+export interface AppApi {
+  getVersion(): Promise<string>;
+}
+
+export interface UpdateCheckResult {
+  currentVersion: string;
+  latestVersion: string;
+  hasUpdate: boolean;
+  releaseUrl: string;
+}
+
+export interface UpdateInstallResult {
+  status: "blocked" | "installing";
+  liveSessionCount: number;
+}
+
+export interface UpdateApi {
+  check(): Promise<UpdateCheckResult>;
+  download(): void;
+  install(): Promise<UpdateInstallResult>;
+  onProgress(callback: (percent: number) => void): () => void;
+  onDownloaded(callback: () => void): () => void;
+  onError(callback: (message: string) => void): () => void;
+}
+
 export interface Api {
   issues: IssuesApi;
   config: ConfigApi;
   pty: PtyApi;
+  app: AppApi;
+  update: UpdateApi;
 }
