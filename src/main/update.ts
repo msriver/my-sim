@@ -59,7 +59,13 @@ export function downloadUpdate(win: BrowserWindow): void {
   // Relies on checkForUpdate() having already populated autoUpdater's internal update-info
   // cache in this same run - the renderer only enables the "업데이트 하기" button after a
   // successful check, which naturally enforces this ordering.
-  autoUpdater.downloadUpdate();
+  //
+  // downloadUpdate() both emits "error" (already forwarded to the renderer above) AND rejects
+  // its returned promise on failure - an uncaught rejection here would crash the whole main
+  // process (Node terminates on unhandled rejection), bypassing before-quit/killAllSessions
+  // and orphaning any live `claude` pty session. The "error" listener is the one real handling
+  // path; this catch only exists to swallow the duplicate rejection so it can't crash.
+  autoUpdater.downloadUpdate().catch(() => {});
 }
 
 export function installUpdate(): UpdateInstallResult {

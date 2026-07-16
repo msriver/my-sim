@@ -561,6 +561,14 @@ select option {
   color: var(--text-dim);
 }
 
+.about-update {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-top: 10px;
+  border-top: 1px solid var(--border);
+}
+
 .settings-path-row {
   display: flex;
   gap: 8px;
