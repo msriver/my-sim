@@ -3,6 +3,8 @@ import type { Issue, IssuePriority, IssueStatus } from "../issues/types.js";
 export interface Config {
   /** Absolute path to the project Claude Code should run in by default. */
   defaultTargetProject: string;
+  /** UI language. Defaults to "en" when absent (see loadConfig in src/config.ts). */
+  language: "ko" | "en";
 }
 
 export interface IssuesApi {

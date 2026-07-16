@@ -12,7 +12,7 @@ export function saveConfig(config: Config): void {
 }
 
 function writeDefaultConfig(): Config {
-  const config: Config = { defaultTargetProject: DEFAULT_TARGET_PROJECT };
+  const config: Config = { defaultTargetProject: DEFAULT_TARGET_PROJECT, language: "en" };
   saveConfig(config);
   return config;
 }
@@ -22,7 +22,10 @@ export function loadConfig(): Config {
     return writeDefaultConfig();
   }
   const raw = JSON.parse(fs.readFileSync(CONFIG_PATH, "utf-8"));
-  return { defaultTargetProject: raw.defaultTargetProject ?? DEFAULT_TARGET_PROJECT };
+  return {
+    defaultTargetProject: raw.defaultTargetProject ?? DEFAULT_TARGET_PROJECT,
+    language: raw.language ?? "en",
+  };
 }
 
 function resolveRawPath(rawPath: string): string {

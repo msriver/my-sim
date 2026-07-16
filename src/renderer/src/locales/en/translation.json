@@ -1,0 +1,127 @@
+{
+  "common": {
+    "status": {
+      "todo": "TODO",
+      "in-progress": "IN PROGRESS",
+      "done": "DONE"
+    },
+    "priority": {
+      "low": "Low",
+      "medium": "Medium",
+      "high": "High"
+    },
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "save": "Save",
+    "saving": "Saving...",
+    "selectFolder": "Select Folder",
+    "folderNotFound": "⚠ This path does not exist.",
+    "titleRequired": "Please enter a title."
+  },
+  "app": {
+    "header": {
+      "trash": "🗑 Trash",
+      "settings": "⚙ Settings"
+    },
+    "sidebar": {
+      "newIssue": "+ New Issue",
+      "searchPlaceholder": "Search...",
+      "filterAll": "All",
+      "filterTodo": "🔵 TODO",
+      "filterInProgress": "🟡 IN PROGRESS",
+      "filterDone": "🟢 DONE"
+    },
+    "emptyState": "No issues yet. Click '+ New Issue' to create one.",
+    "initError": {
+      "fallback": "Failed to load initial data.",
+      "retry": "Retry"
+    },
+    "toast": {
+      "issueCreated": "Created issue \"{{title}}\".",
+      "issueUpdated": "Updated issue \"{{title}}\".",
+      "issueDeleted": "Deleted issue \"{{title}}\".",
+      "issueRestored": "Restored issue \"{{title}}\".",
+      "statusChanged": "Status changed to \"{{status}}\".",
+      "statusChangeFailed": "Failed to change status.",
+      "deleteFailed": "Failed to delete the issue.",
+      "deleteBlockedLiveSession": "Cannot delete an issue with a running session. Stop the session first.",
+      "runFailed": "Failed to start Claude Code.",
+      "busySession": "\"{{busyIssueTitle}}\" is already running in the same project. Only one session per project is allowed.",
+      "configSaved": "Settings saved."
+    },
+    "confirmDelete": {
+      "title": "Delete Issue",
+      "message": "Delete issue \"{{title}}\"?",
+      "confirmLabel": "Delete"
+    },
+    "confirmNavigation": {
+      "title": "Unsaved Changes",
+      "message": "You have unsaved changes. Continue anyway?",
+      "confirmLabel": "Continue"
+    }
+  },
+  "issueDetail": {
+    "edit": "Edit",
+    "delete": "Delete",
+    "starting": "Starting...",
+    "viewTerminal": "View Terminal",
+    "runButton": "▶ Run Claude Code",
+    "priorityLabel": "Priority {{priority}}",
+    "targetProject": "Target Project",
+    "defaultSuffix": "{{targetProject}} (default)",
+    "noContent": "(No content)"
+  },
+  "issueList": {
+    "empty": "No issues",
+    "running": "● Running"
+  },
+  "newIssueForm": {
+    "heading": "New Issue",
+    "titleLabel": "Title",
+    "bodyLabel": "Description",
+    "priorityLabel": "Priority",
+    "saveFailed": "Failed to save the issue."
+  },
+  "editIssueForm": {
+    "heading": "Edit Issue",
+    "titleLabel": "Title",
+    "bodyLabel": "Description",
+    "priorityLabel": "Priority",
+    "targetProjectLabel": "Target Project (leave empty to use default)",
+    "targetProjectPlaceholder": "Use default",
+    "saveFailed": "Failed to save the issue."
+  },
+  "settings": {
+    "heading": "Settings",
+    "targetProjectLabel": "Default Project Folder (where Claude Code runs)",
+    "languageLabel": "Language",
+    "pathRequired": "Please enter a path.",
+    "saveFailed": "Failed to save."
+  },
+  "terminal": {
+    "claudeCodeSuffix": " · Claude Code",
+    "backToList": "← Back to List",
+    "endSession": "End Session",
+    "exitedByUser": "You ended the session.",
+    "exitedNormally": "The session ended normally.",
+    "exitedAbnormally": "The session ended abnormally (code={{code}}{{signal}}).",
+    "confirmEnd": {
+      "title": "End Session",
+      "message": "End the \"{{title}}\" session? Any work in progress will stop immediately.",
+      "confirmLabel": "End"
+    }
+  },
+  "confirmDialog": {
+    "confirmDefault": "Confirm",
+    "cancelDefault": "Cancel"
+  },
+  "trash": {
+    "heading": "Trash",
+    "loading": "Loading...",
+    "empty": "No deleted issues.",
+    "restore": "Restore",
+    "restoring": "Restoring...",
+    "close": "Close",
+    "restoreFailed": "Failed to restore."
+  }
+}
