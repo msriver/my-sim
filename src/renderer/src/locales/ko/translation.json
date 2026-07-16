@@ -69,7 +69,16 @@
     "priorityLabel": "우선순위 {{priority}}",
     "targetProject": "대상 프로젝트",
     "defaultSuffix": "{{targetProject}} (기본값)",
-    "noContent": "(내용 없음)"
+    "noContent": "(내용 없음)",
+    "closedAtLabel": "종료일: {{date}}"
+  },
+  "issueComments": {
+    "heading": "코멘트",
+    "placeholder": "코멘트를 입력하세요...",
+    "addButton": "등록",
+    "adding": "등록 중...",
+    "addFailed": "코멘트 등록에 실패했습니다.",
+    "empty": "아직 코멘트가 없습니다."
   },
   "issueList": {
     "empty": "이슈 없음",

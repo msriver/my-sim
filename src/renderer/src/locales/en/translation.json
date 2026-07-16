@@ -69,7 +69,16 @@
     "priorityLabel": "Priority {{priority}}",
     "targetProject": "Target Project",
     "defaultSuffix": "{{targetProject}} (default)",
-    "noContent": "(No content)"
+    "noContent": "(No content)",
+    "closedAtLabel": "Closed: {{date}}"
+  },
+  "issueComments": {
+    "heading": "Comments",
+    "placeholder": "Write a comment...",
+    "addButton": "Add",
+    "adding": "Adding...",
+    "addFailed": "Failed to add the comment.",
+    "empty": "No comments yet."
   },
   "issueList": {
     "empty": "No issues",
