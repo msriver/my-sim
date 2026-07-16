@@ -6,6 +6,7 @@ import {
   setStatus,
   deleteIssue,
   restoreIssue,
+  addComment,
 } from "../../issues/store.js";
 import type { IssuePriority, IssueStatus } from "../../issues/types.js";
 
@@ -53,5 +54,10 @@ export function registerIssueHandlers(): void {
   ipcMain.handle("issues:restore", (_event, id: string) => {
     console.log(`[ipc] issues:restore ${id}`);
     return restoreIssue(id);
+  });
+
+  ipcMain.handle("issues:addComment", (_event, id: string, body: string) => {
+    console.log(`[ipc] issues:addComment ${id}`);
+    return addComment(id, body);
   });
 }

@@ -46,6 +46,7 @@
       "deleteFailed": "이슈 삭제에 실패했습니다.",
       "deleteBlockedLiveSession": "실행 중인 세션이 있는 이슈는 삭제할 수 없습니다. 먼저 세션을 종료해주세요.",
       "runFailed": "Claude Code 실행에 실패했습니다.",
+      "commentAdded": "코멘트를 등록했습니다.",
       "busySession": "\"{{busyIssueTitle}}\" 이슈가 같은 프로젝트에서 이미 실행 중입니다. 동일 프로젝트는 세션을 1개만 유지할 수 있습니다.",
       "configSaved": "환경설정을 저장했습니다."
     },
@@ -69,7 +70,18 @@
     "priorityLabel": "우선순위 {{priority}}",
     "targetProject": "대상 프로젝트",
     "defaultSuffix": "{{targetProject}} (기본값)",
-    "noContent": "(내용 없음)"
+    "noContent": "(내용 없음)",
+    "createdAtLabel": "생성일: {{date}}",
+    "updatedAtLabel": "수정일: {{date}}",
+    "closedAtLabel": "종료일: {{date}}"
+  },
+  "issueComments": {
+    "heading": "코멘트",
+    "placeholder": "코멘트를 입력하세요...",
+    "addButton": "등록",
+    "adding": "등록 중...",
+    "addFailed": "코멘트 등록에 실패했습니다.",
+    "empty": "아직 코멘트가 없습니다."
   },
   "issueList": {
     "empty": "이슈 없음",

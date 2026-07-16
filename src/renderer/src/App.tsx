@@ -147,6 +147,13 @@ export default function App() {
     }
   }
 
+  async function handleAddComment(issue: Issue, body: string) {
+    console.log(`[ui] 코멘트 등록: "${issue.title}"`);
+    await window.api.issues.addComment(issue.id, body);
+    await refresh();
+    pushToast(t("app.toast.commentAdded"));
+  }
+
   async function handleRun(issue: Issue) {
     if (liveIssueIds.includes(issue.id)) {
       console.log(`[ui] "Claude Code 실행"(기존 세션 보기) 클릭: "${issue.title}"`);
@@ -363,6 +370,7 @@ export default function App() {
                 setView("edit");
               }}
               onDelete={() => handleDeleteRequest(selected)}
+              onAddComment={(body) => handleAddComment(selected, body)}
             />
           )}
 

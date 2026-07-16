@@ -20,6 +20,8 @@ export interface IssuesApi {
   delete(id: string): Promise<Issue>;
   /** Clears the deleted flag, making the issue visible in list() again. */
   restore(id: string): Promise<Issue>;
+  /** Appends a new comment to the issue and returns the updated Issue. */
+  addComment(id: string, body: string): Promise<Issue>;
 }
 
 export interface ConfigApi {

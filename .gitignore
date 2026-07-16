@@ -5,6 +5,6 @@ out/
 *.tsbuildinfo
 .claude/
 .my-sim/
-issues/
+/issues/
 CLAUDE.md
 docs/stories/

@@ -2,6 +2,7 @@ import React from "react";
 import { marked } from "marked";
 import { useTranslation } from "react-i18next";
 import type { Issue, IssueStatus } from "../../../issues/types";
+import { IssueComments } from "./IssueComments";
 
 interface Props {
   issue: Issue;
@@ -13,6 +14,7 @@ interface Props {
   onRun: () => void;
   onEdit: () => void;
   onDelete: () => void;
+  onAddComment: (body: string) => Promise<void>;
 }
 
 export function IssueDetail({
@@ -24,6 +26,7 @@ export function IssueDetail({
   onRun,
   onEdit,
   onDelete,
+  onAddComment,
 }: Props) {
   const { t, i18n } = useTranslation();
   const bodyHtml = issue.body ? marked.parse(issue.body, { async: false }) : "";
@@ -62,8 +65,22 @@ export function IssueDetail({
           </span>
         </div>
         <div className="issue-detail-meta-row issue-detail-meta-date">
-          {new Date(issue.updatedAt).toLocaleString(dateLocale)}
+          {t("issueDetail.createdAtLabel", {
+            date: new Date(issue.createdAt).toLocaleString(dateLocale),
+          })}
         </div>
+        <div className="issue-detail-meta-row issue-detail-meta-date">
+          {t("issueDetail.updatedAtLabel", {
+            date: new Date(issue.updatedAt).toLocaleString(dateLocale),
+          })}
+        </div>
+        {issue.closedAt && (
+          <div className="issue-detail-meta-row issue-detail-meta-date">
+            {t("issueDetail.closedAtLabel", {
+              date: new Date(issue.closedAt).toLocaleString(dateLocale),
+            })}
+          </div>
+        )}
         <div className="issue-detail-target">
           <span className="issue-detail-target-label">{t("issueDetail.targetProject")}</span>
           <span className="issue-detail-target-value">
@@ -76,6 +93,7 @@ export function IssueDetail({
       ) : (
         <p className="issue-detail-body-empty">{t("issueDetail.noContent")}</p>
       )}
+      <IssueComments comments={issue.comments} onAddComment={onAddComment} />
     </div>
   );
 }

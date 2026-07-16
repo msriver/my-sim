@@ -439,6 +439,60 @@ select option {
   color: var(--accent);
 }
 
+.issue-comments {
+  margin-top: 24px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+}
+
+.issue-comments-heading {
+  margin: 0 0 12px;
+  font-size: 14px;
+}
+
+.issue-comments-form {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.issue-comments-form textarea {
+  resize: vertical;
+}
+
+.issue-comments-empty {
+  color: var(--text-dim);
+  font-size: 13px;
+}
+
+.issue-comments-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.issue-comments-item {
+  padding: 10px 12px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+}
+
+.issue-comments-item-body {
+  margin: 0 0 6px;
+  white-space: pre-wrap;
+  line-height: 1.5;
+}
+
+.issue-comments-item-date {
+  font-size: 12px;
+  color: var(--text-dim);
+}
+
 .new-issue-form {
   display: flex;
   flex-direction: column;
