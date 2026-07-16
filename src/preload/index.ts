@@ -10,6 +10,7 @@ const api: Api = {
     setStatus: (id, status) => ipcRenderer.invoke("issues:setStatus", id, status),
     delete: (id) => ipcRenderer.invoke("issues:delete", id),
     restore: (id) => ipcRenderer.invoke("issues:restore", id),
+    addComment: (id, body) => ipcRenderer.invoke("issues:addComment", id, body),
   },
   config: {
     get: () => ipcRenderer.invoke("config:get"),
