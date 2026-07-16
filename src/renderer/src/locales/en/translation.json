@@ -21,7 +21,8 @@
   "app": {
     "header": {
       "trash": "🗑 Trash",
-      "settings": "⚙ Settings"
+      "settings": "⚙ Settings",
+      "about": "ℹ About"
     },
     "sidebar": {
       "newIssue": "+ New Issue",
@@ -135,5 +136,25 @@
     "restoring": "Restoring...",
     "close": "Close",
     "restoreFailed": "Failed to restore."
+  },
+  "about": {
+    "heading": "About",
+    "version": "v{{version}}",
+    "license": "MIT License",
+    "author": "Author: {{author}}",
+    "repoLink": "GitHub Repository",
+    "checkUpdate": "Check for Updates",
+    "checking": "Checking...",
+    "upToDate": "You're on the latest version.",
+    "updateAvailable": "New version {{latestVersion}} available",
+    "releaseNotesLink": "View release notes",
+    "checkFailed": "Failed to check for updates: {{message}}",
+    "downloadUpdate": "Update",
+    "downloading": "Downloading... ({{percent}}%)",
+    "readyToInstall": "Download complete. Ready to restart and install.",
+    "restartAndInstall": "Restart and Install",
+    "installBlocked": "Cannot update while a session is running — stop the session first. ({{liveSessionCount}} running session(s))",
+    "installError": "Failed to install the update: {{message}}",
+    "close": "Close"
   }
 }
