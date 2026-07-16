@@ -84,6 +84,15 @@ select:focus {
   border-color: var(--accent);
 }
 
+/* select's own background is a translucent overlay (rgba above), but native <option>
+   elements inside the open dropdown popup are a separate rendering surface that Chromium
+   draws with its OS/browser default (white) background unless explicitly overridden - this
+   made the open dropdown unreadable until the browser's own hover-highlight kicked in. */
+select option {
+  background-color: var(--bg-elevated);
+  color: var(--text);
+}
+
 .app {
   display: flex;
   flex-direction: column;
@@ -631,6 +640,19 @@ select:focus {
   background: #111318;
   border-radius: 8px;
   padding: 8px;
+}
+
+/* Hide xterm's own scrollbar (xterm.css's .xterm-viewport has overflow-y: scroll always on)
+   for a cleaner look. Purely cosmetic - .xterm-viewport is absolutely positioned to fill its
+   parent (left/right/top/bottom: 0), so hiding the scrollbar affix doesn't change any box
+   size that FitAddon.fit() measures (it measures .terminal-container, not this element). */
+.terminal-container .xterm-viewport {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.terminal-container .xterm-viewport::-webkit-scrollbar {
+  display: none;
 }
 
 .terminal-loading {
