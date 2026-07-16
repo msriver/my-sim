@@ -1,13 +1,18 @@
 import React, { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
+import type { Config } from "../../../shared/ipc";
 
 interface Props {
   targetProject: string;
-  onSave: (path: string) => Promise<void>;
+  language: Config["language"];
+  onSave: (config: { defaultTargetProject: string; language: Config["language"] }) => Promise<void>;
   onClose: () => void;
 }
 
-export function SettingsView({ targetProject, onSave, onClose }: Props) {
+export function SettingsView({ targetProject, language, onSave, onClose }: Props) {
+  const { t } = useTranslation();
   const [path, setPath] = useState(targetProject);
+  const [selectedLanguage, setSelectedLanguage] = useState<Config["language"]>(language);
   const [folderExists, setFolderExists] = useState<boolean | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
@@ -37,15 +42,15 @@ export function SettingsView({ targetProject, onSave, onClose }: Props) {
 
   async function handleSave() {
     if (!path.trim()) {
-      setError("경로를 입력해주세요.");
+      setError(t("settings.pathRequired"));
       return;
     }
     setError(null);
     setSaving(true);
     try {
-      await onSave(path.trim());
+      await onSave({ defaultTargetProject: path.trim(), language: selectedLanguage });
     } catch (err) {
-      setError(err instanceof Error ? err.message : "저장하지 못했습니다.");
+      setError(err instanceof Error ? err.message : t("settings.saveFailed"));
     } finally {
       setSaving(false);
     }
@@ -59,24 +64,34 @@ export function SettingsView({ targetProject, onSave, onClose }: Props) {
   return (
     <div className="modal-overlay" onClick={handleClose}>
       <div className="modal-box" role="dialog" aria-modal="true" onClick={(e) => e.stopPropagation()}>
-        <h2>환경설정</h2>
+        <h2>{t("settings.heading")}</h2>
         <label>
-          기본 프로젝트 폴더 (Claude Code 실행 폴더)
+          {t("settings.targetProjectLabel")}
           <div className="settings-path-row">
             <input value={path} onChange={(e) => setPath(e.target.value)} />
             <button type="button" onClick={handleSelectFolder}>
-              폴더 선택
+              {t("common.selectFolder")}
             </button>
           </div>
-          {folderExists === false && <p className="form-warning">⚠ 해당 경로가 존재하지 않습니다.</p>}
+          {folderExists === false && <p className="form-warning">{t("common.folderNotFound")}</p>}
+        </label>
+        <label>
+          {t("settings.languageLabel")}
+          <select
+            value={selectedLanguage}
+            onChange={(e) => setSelectedLanguage(e.target.value as Config["language"])}
+          >
+            <option value="ko">한국어</option>
+            <option value="en">English</option>
+          </select>
         </label>
         {error && <p className="form-error">{error}</p>}
         <div className="form-actions">
           <button type="button" onClick={handleClose}>
-            취소
+            {t("common.cancel")}
           </button>
           <button type="button" className="primary" onClick={handleSave} disabled={saving}>
-            {saving ? "저장 중..." : "저장"}
+            {saving ? t("common.saving") : t("common.save")}
           </button>
         </div>
       </div>
