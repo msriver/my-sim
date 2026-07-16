@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 interface Props {
   title: string;
@@ -12,11 +13,15 @@ interface Props {
 export function ConfirmDialog({
   title,
   message,
-  confirmLabel = "확인",
-  cancelLabel = "취소",
+  confirmLabel,
+  cancelLabel,
   onConfirm,
   onCancel,
 }: Props) {
+  const { t } = useTranslation();
+  const resolvedConfirmLabel = confirmLabel ?? t("confirmDialog.confirmDefault");
+  const resolvedCancelLabel = cancelLabel ?? t("confirmDialog.cancelDefault");
+
   return (
     <div className="modal-overlay" onClick={onCancel}>
       <div className="modal-box" role="dialog" aria-modal="true" onClick={(e) => e.stopPropagation()}>
@@ -24,10 +29,10 @@ export function ConfirmDialog({
         <p className="confirm-dialog-message">{message}</p>
         <div className="form-actions">
           <button type="button" onClick={onCancel}>
-            {cancelLabel}
+            {resolvedCancelLabel}
           </button>
           <button type="button" className="danger" onClick={onConfirm}>
-            {confirmLabel}
+            {resolvedConfirmLabel}
           </button>
         </div>
       </div>

@@ -1,5 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import type { Issue, IssuePriority, IssueStatus } from "../../issues/types";
+import type { Config } from "../../shared/ipc";
 import { IssueList } from "./components/IssueList";
 import { IssueDetail } from "./components/IssueDetail";
 import { NewIssueForm } from "./components/NewIssueForm";
@@ -11,12 +13,6 @@ import { TrashView } from "./components/TrashView";
 
 type View = "detail" | "new" | "edit" | "terminal";
 
-const STATUS_LABEL: Record<IssueStatus, string> = {
-  todo: "TODO",
-  "in-progress": "IN PROGRESS",
-  done: "DONE",
-};
-
 interface Toast {
   id: number;
   message: string;
@@ -24,10 +20,12 @@ interface Toast {
 }
 
 export default function App() {
+  const { t, i18n } = useTranslation();
   const [issues, setIssues] = useState<Issue[]>([]);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [view, setView] = useState<View>("detail");
   const [targetProject, setTargetProject] = useState("");
+  const [language, setLanguage] = useState<Config["language"]>("en");
   const [showSettings, setShowSettings] = useState(false);
   const [showTrash, setShowTrash] = useState(false);
   const [deleteTarget, setDeleteTarget] = useState<Issue | null>(null);
@@ -114,10 +112,12 @@ export default function App() {
     try {
       const [list, config] = await Promise.all([refresh(), window.api.config.get()]);
       setTargetProject(config.defaultTargetProject);
+      setLanguage(config.language);
+      await i18n.changeLanguage(config.language);
       if (list.length > 0) setSelectedId(list[0].id);
     } catch (err) {
       console.log(`[ui] 초기 로딩 실패: ${err instanceof Error ? err.message : err}`);
-      setInitError(err instanceof Error ? err.message : "초기 데이터를 불러오지 못했습니다.");
+      setInitError(err instanceof Error ? err.message : t("app.initError.fallback"));
     }
   }
 
@@ -131,7 +131,7 @@ export default function App() {
     await refresh();
     setSelectedId(issue.id);
     setView("detail");
-    pushToast(`"${issue.title}" 이슈를 생성했습니다.`);
+    pushToast(t("app.toast.issueCreated", { title: issue.title }));
   }
 
   async function handleStatusChange(issue: Issue, status: IssueStatus) {
@@ -140,10 +140,10 @@ export default function App() {
     try {
       await window.api.issues.setStatus(issue.id, status);
       await refresh();
-      pushToast(`상태가 "${STATUS_LABEL[status]}"(으)로 변경되었습니다.`);
+      pushToast(t("app.toast.statusChanged", { status: t(`common.status.${status}`) }));
     } catch (err) {
       console.log(`[ui] 상태변경 실패: ${err instanceof Error ? err.message : err}`);
-      pushToast("상태 변경에 실패했습니다.", "error");
+      pushToast(t("app.toast.statusChangeFailed"), "error");
     }
   }
 
@@ -163,7 +163,7 @@ export default function App() {
           `[ui] pty 시작 거부됨 (동일 프로젝트 사용 중): "${issue.title}" vs "${result.busyIssueTitle}"`
         );
         pushToast(
-          `"${result.busyIssueTitle}" 이슈가 같은 프로젝트에서 이미 실행 중입니다. 동일 프로젝트는 세션을 1개만 유지할 수 있습니다.`,
+          t("app.toast.busySession", { busyIssueTitle: result.busyIssueTitle }),
           "error"
         );
         return;
@@ -182,7 +182,7 @@ export default function App() {
       setView("terminal");
     } catch (err) {
       console.log(`[ui] pty 시작 실패: ${err instanceof Error ? err.message : err}`);
-      pushToast("Claude Code 실행에 실패했습니다.", "error");
+      pushToast(t("app.toast.runFailed"), "error");
     } finally {
       setStartingIssueIds((prev) => prev.filter((id) => id !== issue.id));
     }
@@ -197,13 +197,13 @@ export default function App() {
     await refresh();
     setSelectedId(issue.id);
     setView("detail");
-    pushToast(`"${issue.title}" 이슈를 수정했습니다.`);
+    pushToast(t("app.toast.issueUpdated", { title: issue.title }));
   }
 
   function handleDeleteRequest(issue: Issue) {
     if (liveIssueIds.includes(issue.id)) {
       console.log(`[ui] 삭제 클릭 거부됨 (세션 실행 중): "${issue.title}"`);
-      pushToast("실행 중인 세션이 있는 이슈는 삭제할 수 없습니다. 먼저 세션을 종료해주세요.", "error");
+      pushToast(t("app.toast.deleteBlockedLiveSession"), "error");
       return;
     }
     console.log(`[ui] 삭제 클릭: "${issue.title}"`);
@@ -225,11 +225,11 @@ export default function App() {
       setSelectedId(list.length > 0 ? list[0].id : null);
       setView("detail");
       setDeleteTarget(null);
-      pushToast(`"${issue.title}" 이슈를 삭제했습니다.`);
+      pushToast(t("app.toast.issueDeleted", { title: issue.title }));
     } catch (err) {
       console.log(`[ui] 삭제 실패: ${err instanceof Error ? err.message : err}`);
       setDeleteTarget(null);
-      pushToast("이슈 삭제에 실패했습니다.", "error");
+      pushToast(t("app.toast.deleteFailed"), "error");
     }
   }
 
@@ -237,15 +237,19 @@ export default function App() {
     console.log(`[ui] 복구 클릭: "${issue.title}"`);
     await window.api.issues.restore(issue.id);
     await refresh();
-    pushToast(`"${issue.title}" 이슈를 복구했습니다.`);
+    pushToast(t("app.toast.issueRestored", { title: issue.title }));
   }
 
-  async function handleSaveConfig(path: string) {
-    console.log(`[ui] 환경설정 저장: defaultTargetProject="${path}"`);
-    const updated = await window.api.config.set({ defaultTargetProject: path });
+  async function handleSaveConfig(config: { defaultTargetProject: string; language: Config["language"] }) {
+    console.log(
+      `[ui] 환경설정 저장: defaultTargetProject="${config.defaultTargetProject}", language="${config.language}"`
+    );
+    const updated = await window.api.config.set(config);
     setTargetProject(updated.defaultTargetProject);
+    setLanguage(updated.language);
+    await i18n.changeLanguage(updated.language);
     setShowSettings(false);
-    pushToast("환경설정을 저장했습니다.");
+    pushToast(t("app.toast.configSaved"));
   }
 
   if (initError) {
@@ -253,7 +257,7 @@ export default function App() {
       <div className="app-init-error">
         <p>{initError}</p>
         <button className="primary" onClick={loadInitialData}>
-          다시 시도
+          {t("app.initError.retry")}
         </button>
       </div>
     );
@@ -270,7 +274,7 @@ export default function App() {
               setShowTrash(true);
             }}
           >
-            🗑 휴지통
+            {t("app.header.trash")}
           </button>
           <button
             onClick={() => {
@@ -278,7 +282,7 @@ export default function App() {
               setShowSettings(true);
             }}
           >
-            ⚙ 환경설정
+            {t("app.header.settings")}
           </button>
         </div>
       </header>
@@ -294,13 +298,13 @@ export default function App() {
                 });
               }}
             >
-              + 새 이슈
+              {t("app.sidebar.newIssue")}
             </button>
           </div>
           <div className="sidebar-filters">
             <input
               type="text"
-              placeholder="검색..."
+              placeholder={t("app.sidebar.searchPlaceholder")}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
@@ -308,10 +312,10 @@ export default function App() {
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value as "all" | IssueStatus)}
             >
-              <option value="all">전체</option>
-              <option value="todo">🔵 TODO</option>
-              <option value="in-progress">🟡 IN PROGRESS</option>
-              <option value="done">🟢 DONE</option>
+              <option value="all">{t("app.sidebar.filterAll")}</option>
+              <option value="todo">{t("app.sidebar.filterTodo")}</option>
+              <option value="in-progress">{t("app.sidebar.filterInProgress")}</option>
+              <option value="done">{t("app.sidebar.filterDone")}</option>
             </select>
           </div>
           <IssueList
@@ -363,7 +367,7 @@ export default function App() {
           )}
 
           {view === "detail" && !selected && (
-            <div className="empty-state">등록된 이슈가 없습니다. '+ 새 이슈'를 눌러 만들어보세요.</div>
+            <div className="empty-state">{t("app.emptyState")}</div>
           )}
 
           {sessions.map((s) => (
@@ -382,6 +386,7 @@ export default function App() {
       {showSettings && (
         <SettingsView
           targetProject={targetProject}
+          language={language}
           onSave={handleSaveConfig}
           onClose={() => setShowSettings(false)}
         />
@@ -389,9 +394,9 @@ export default function App() {
 
       {deleteTarget && (
         <ConfirmDialog
-          title="이슈 삭제"
-          message={`"${deleteTarget.title}" 이슈를 삭제하시겠습니까?`}
-          confirmLabel="삭제"
+          title={t("app.confirmDelete.title")}
+          message={t("app.confirmDelete.message", { title: deleteTarget.title })}
+          confirmLabel={t("app.confirmDelete.confirmLabel")}
           onConfirm={handleDeleteConfirm}
           onCancel={handleDeleteCancel}
         />
@@ -403,18 +408,18 @@ export default function App() {
 
       {pendingNavigation && (
         <ConfirmDialog
-          title="저장하지 않은 변경사항"
-          message="저장하지 않은 변경사항이 있습니다. 계속하시겠습니까?"
-          confirmLabel="계속"
+          title={t("app.confirmNavigation.title")}
+          message={t("app.confirmNavigation.message")}
+          confirmLabel={t("app.confirmNavigation.confirmLabel")}
           onConfirm={confirmNavigation}
           onCancel={cancelNavigation}
         />
       )}
 
       <div className="toast-container">
-        {toasts.map((t) => (
-          <div key={t.id} className={`toast toast-${t.type}`}>
-            {t.message}
+        {toasts.map((toast) => (
+          <div key={toast.id} className={`toast toast-${toast.type}`}>
+            {toast.message}
           </div>
         ))}
       </div>

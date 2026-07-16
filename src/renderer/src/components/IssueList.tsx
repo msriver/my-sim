@@ -1,17 +1,6 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import type { Issue } from "../../../issues/types";
-
-const STATUS_LABEL: Record<Issue["status"], string> = {
-  todo: "TODO",
-  "in-progress": "IN PROGRESS",
-  done: "DONE",
-};
-
-const PRIORITY_LABEL: Record<Issue["priority"], string> = {
-  low: "낮음",
-  medium: "보통",
-  high: "높음",
-};
 
 interface Props {
   issues: Issue[];
@@ -21,8 +10,10 @@ interface Props {
 }
 
 export function IssueList({ issues, selectedId, runningIds, onSelect }: Props) {
+  const { t } = useTranslation();
+
   if (issues.length === 0) {
-    return <div className="issue-list-empty">이슈 없음</div>;
+    return <div className="issue-list-empty">{t("issueList.empty")}</div>;
   }
 
   function handleKeyDown(e: React.KeyboardEvent<HTMLLIElement>, id: string) {
@@ -58,12 +49,14 @@ export function IssueList({ issues, selectedId, runningIds, onSelect }: Props) {
           <span className="issue-title" title={issue.title}>
             {issue.title}
           </span>
-          {runningIds.includes(issue.id) && <span className="running-badge">● 실행 중</span>}
+          {runningIds.includes(issue.id) && (
+            <span className="running-badge">{t("issueList.running")}</span>
+          )}
           <span className={`priority-badge priority-${issue.priority}`}>
-            {PRIORITY_LABEL[issue.priority]}
+            {t(`common.priority.${issue.priority}`)}
           </span>
           <span className={`issue-status-label status-${issue.status}`}>
-            {STATUS_LABEL[issue.status]}
+            {t(`common.status.${issue.status}`)}
           </span>
         </li>
       ))}

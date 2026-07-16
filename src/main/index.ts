@@ -7,6 +7,15 @@ import { registerConfigHandlers } from "./ipc/config.js";
 import { killAllSessions } from "./pty.js";
 import { loadConfig, saveConfig } from "../config.js";
 
+// react-i18next only runs in the renderer - this dialog is opened directly from the main
+// process before any window exists, so it can't reach that instance. Just two strings, so a
+// tiny inline map (keyed by the persisted config.language) is enough; see docs/stories/
+// 10-i18n-국제화-구조-적용-story.md section 3.5 for why a second i18next instance was rejected.
+const SELECT_FOLDER_DIALOG_TITLE = {
+  ko: "Claude Code를 실행할 기본 프로젝트 폴더 선택",
+  en: "Select the default project folder to run Claude Code in",
+};
+
 /**
  * On startup (first run, or if the configured folder was moved/deleted since), the
  * default target project won't exist on disk yet. Prompt for a real folder before the
@@ -18,7 +27,7 @@ async function ensureTargetProjectConfigured(): Promise<void> {
 
   console.log(`[main] default target project not found: "${config.defaultTargetProject}" - prompting for folder`);
   const result = await dialog.showOpenDialog({
-    title: "Claude Code를 실행할 기본 프로젝트 폴더 선택",
+    title: SELECT_FOLDER_DIALOG_TITLE[config.language],
     properties: ["openDirectory"],
   });
   if (!result.canceled && result.filePaths[0]) {

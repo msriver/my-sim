@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { Terminal as XTerm } from "@xterm/xterm";
 import { FitAddon } from "@xterm/addon-fit";
 import "@xterm/xterm/css/xterm.css";
+import { useTranslation } from "react-i18next";
 import type { PtyExitInfo } from "../../../shared/ipc";
 import { ConfirmDialog } from "./ConfirmDialog";
 
@@ -14,6 +15,7 @@ interface Props {
 }
 
 export function Terminal({ issueId, issueTitle, active, onExit, onSessionExit }: Props) {
+  const { t } = useTranslation();
   const containerRef = useRef<HTMLDivElement>(null);
   const [exitInfo, setExitInfo] = useState<PtyExitInfo | null>(null);
   const [confirmingKill, setConfirmingKill] = useState(false);
@@ -111,7 +113,10 @@ export function Terminal({ issueId, issueTitle, active, onExit, onSessionExit }:
   return (
     <div className="terminal-view" style={{ display: active ? "flex" : "none" }}>
       <div className="terminal-header">
-        <span>{issueTitle} · Claude Code</span>
+        <span>
+          {issueTitle}
+          {t("terminal.claudeCodeSuffix")}
+        </span>
         <div className="terminal-header-actions">
           <button
             onClick={() => {
@@ -119,7 +124,7 @@ export function Terminal({ issueId, issueTitle, active, onExit, onSessionExit }:
               onExit();
             }}
           >
-            ← 목록으로
+            {t("terminal.backToList")}
           </button>
           {!exitInfo && (
             <button
@@ -129,7 +134,7 @@ export function Terminal({ issueId, issueTitle, active, onExit, onSessionExit }:
                 setConfirmingKill(true);
               }}
             >
-              세션 종료
+              {t("terminal.endSession")}
             </button>
           )}
         </div>
@@ -141,10 +146,13 @@ export function Terminal({ issueId, issueTitle, active, onExit, onSessionExit }:
           }`}
         >
           {killedByUserRef.current
-            ? "사용자가 세션을 종료했습니다."
+            ? t("terminal.exitedByUser")
             : exitedNormally
-              ? "세션이 정상적으로 종료되었습니다."
-              : `세션이 비정상 종료되었습니다 (code=${exitInfo.exitCode}${exitInfo.signal ? `, signal=${exitInfo.signal}` : ""}).`}
+              ? t("terminal.exitedNormally")
+              : t("terminal.exitedAbnormally", {
+                  code: exitInfo.exitCode,
+                  signal: exitInfo.signal ? `, signal=${exitInfo.signal}` : "",
+                })}
         </div>
       )}
       <div className="terminal-body">
@@ -153,9 +161,9 @@ export function Terminal({ issueId, issueTitle, active, onExit, onSessionExit }:
 
       {confirmingKill && (
         <ConfirmDialog
-          title="세션 종료"
-          message={`"${issueTitle}" 세션을 종료하시겠습니까? 진행 중인 작업이 즉시 중단됩니다.`}
-          confirmLabel="종료"
+          title={t("terminal.confirmEnd.title")}
+          message={t("terminal.confirmEnd.message", { title: issueTitle })}
+          confirmLabel={t("terminal.confirmEnd.confirmLabel")}
           onConfirm={handleKillConfirm}
           onCancel={() => setConfirmingKill(false)}
         />
