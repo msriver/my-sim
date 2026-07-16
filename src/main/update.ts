@@ -1,8 +1,14 @@
 import { app } from "electron";
 import type { BrowserWindow } from "electron";
-import { autoUpdater } from "electron-updater";
+// electron-updater ships as CommonJS; under this repo's "type": "module" + electron-vite's
+// ESM main bundle, a named import (`import { autoUpdater } from "electron-updater"`) throws
+// "Named export 'autoUpdater' not found" at runtime even though it type-checks fine - go
+// through the default export instead.
+import electronUpdater from "electron-updater";
 import type { UpdateCheckResult, UpdateInstallResult } from "../shared/ipc.js";
 import { liveSessionCount } from "./pty.js";
+
+const { autoUpdater } = electronUpdater;
 
 // Never download without an explicit "업데이트 하기" click, and never install silently on
 // quit - both would bypass the live-session guard below and risk killing a running `claude`
