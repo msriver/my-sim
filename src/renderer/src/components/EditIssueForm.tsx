@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import type { Issue, IssuePriority } from "../../../issues/types";
 
 interface Props {
@@ -14,6 +15,7 @@ interface Props {
 }
 
 export function EditIssueForm({ issue, onCancel, onSubmit, onDirtyChange }: Props) {
+  const { t } = useTranslation();
   const [title, setTitle] = useState(issue.title);
   const [body, setBody] = useState(issue.body);
   const [priority, setPriority] = useState<IssuePriority>(issue.priority);
@@ -58,7 +60,7 @@ export function EditIssueForm({ issue, onCancel, onSubmit, onDirtyChange }: Prop
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (!title.trim()) {
-      setError("제목을 입력해주세요.");
+      setError(t("common.titleRequired"));
       return;
     }
     setError(null);
@@ -71,7 +73,7 @@ export function EditIssueForm({ issue, onCancel, onSubmit, onDirtyChange }: Prop
         targetProject: targetProject.trim() || undefined,
       });
     } catch (err) {
-      setError(err instanceof Error ? err.message : "이슈를 저장하지 못했습니다.");
+      setError(err instanceof Error ? err.message : t("editIssueForm.saveFailed"));
     } finally {
       setSaving(false);
     }
@@ -79,36 +81,36 @@ export function EditIssueForm({ issue, onCancel, onSubmit, onDirtyChange }: Prop
 
   return (
     <form className="new-issue-form" onSubmit={handleSubmit}>
-      <h2>이슈 수정</h2>
+      <h2>{t("editIssueForm.heading")}</h2>
       <label>
-        제목
+        {t("editIssueForm.titleLabel")}
         <input value={title} onChange={(e) => setTitle(e.target.value)} autoFocus />
       </label>
       <label>
-        내용
+        {t("editIssueForm.bodyLabel")}
         <textarea value={body} onChange={(e) => setBody(e.target.value)} rows={8} />
       </label>
       <label>
-        우선순위
+        {t("editIssueForm.priorityLabel")}
         <select value={priority} onChange={(e) => setPriority(e.target.value as IssuePriority)}>
-          <option value="low">낮음</option>
-          <option value="medium">보통</option>
-          <option value="high">높음</option>
+          <option value="low">{t("common.priority.low")}</option>
+          <option value="medium">{t("common.priority.medium")}</option>
+          <option value="high">{t("common.priority.high")}</option>
         </select>
       </label>
       <label>
-        대상 프로젝트 (비워두면 기본값 사용)
+        {t("editIssueForm.targetProjectLabel")}
         <div className="settings-path-row">
           <input
             value={targetProject}
             onChange={(e) => setTargetProject(e.target.value)}
-            placeholder="기본값 사용"
+            placeholder={t("editIssueForm.targetProjectPlaceholder")}
           />
           <button type="button" onClick={handleSelectFolder}>
-            폴더 선택
+            {t("common.selectFolder")}
           </button>
         </div>
-        {folderExists === false && <p className="form-warning">⚠ 해당 경로가 존재하지 않습니다.</p>}
+        {folderExists === false && <p className="form-warning">{t("common.folderNotFound")}</p>}
       </label>
       {error && <p className="form-error">{error}</p>}
       <div className="form-actions">
@@ -119,10 +121,10 @@ export function EditIssueForm({ issue, onCancel, onSubmit, onDirtyChange }: Prop
             onCancel();
           }}
         >
-          취소
+          {t("common.cancel")}
         </button>
         <button type="submit" className="primary" disabled={saving}>
-          {saving ? "저장 중..." : "저장"}
+          {saving ? t("common.saving") : t("common.save")}
         </button>
       </div>
     </form>

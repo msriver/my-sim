@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import type { Issue } from "../../../issues/types";
 
 interface Props {
@@ -7,6 +8,8 @@ interface Props {
 }
 
 export function TrashView({ onRestore, onClose }: Props) {
+  const { t, i18n } = useTranslation();
+  const dateLocale = i18n.language.startsWith("ko") ? "ko-KR" : "en-US";
   const [deletedIssues, setDeletedIssues] = useState<Issue[]>([]);
   const [loading, setLoading] = useState(true);
   const [restoringId, setRestoringId] = useState<string | null>(null);
@@ -34,7 +37,7 @@ export function TrashView({ onRestore, onClose }: Props) {
       await onRestore(issue);
       setDeletedIssues((prev) => prev.filter((i) => i.id !== issue.id));
     } catch (err) {
-      setError(err instanceof Error ? err.message : "복구하지 못했습니다.");
+      setError(err instanceof Error ? err.message : t("trash.restoreFailed"));
     } finally {
       setRestoringId(null);
     }
@@ -48,10 +51,10 @@ export function TrashView({ onRestore, onClose }: Props) {
   return (
     <div className="modal-overlay" onClick={handleClose}>
       <div className="modal-box" role="dialog" aria-modal="true" onClick={(e) => e.stopPropagation()}>
-        <h2>휴지통</h2>
-        {loading && <p className="empty-state">불러오는 중...</p>}
+        <h2>{t("trash.heading")}</h2>
+        {loading && <p className="empty-state">{t("trash.loading")}</p>}
         {!loading && deletedIssues.length === 0 && (
-          <p className="empty-state">삭제된 이슈가 없습니다.</p>
+          <p className="empty-state">{t("trash.empty")}</p>
         )}
         {!loading && deletedIssues.length > 0 && (
           <ul className="trash-list">
@@ -60,13 +63,15 @@ export function TrashView({ onRestore, onClose }: Props) {
                 <span className="trash-title" title={issue.title}>
                   {issue.title}
                 </span>
-                <span className="trash-date">{new Date(issue.updatedAt).toLocaleString()}</span>
+                <span className="trash-date">
+                  {new Date(issue.updatedAt).toLocaleString(dateLocale)}
+                </span>
                 <button
                   type="button"
                   onClick={() => handleRestoreClick(issue)}
                   disabled={restoringId === issue.id}
                 >
-                  {restoringId === issue.id ? "복구 중..." : "복구"}
+                  {restoringId === issue.id ? t("trash.restoring") : t("trash.restore")}
                 </button>
               </li>
             ))}
@@ -75,7 +80,7 @@ export function TrashView({ onRestore, onClose }: Props) {
         {error && <p className="form-error">{error}</p>}
         <div className="form-actions">
           <button type="button" onClick={handleClose}>
-            닫기
+            {t("trash.close")}
           </button>
         </div>
       </div>

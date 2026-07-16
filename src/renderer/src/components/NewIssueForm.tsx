@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import type { IssuePriority } from "../../../issues/types";
 
 interface Props {
@@ -8,6 +9,7 @@ interface Props {
 }
 
 export function NewIssueForm({ onCancel, onSubmit, onDirtyChange }: Props) {
+  const { t } = useTranslation();
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
   const [priority, setPriority] = useState<IssuePriority>("medium");
@@ -23,7 +25,7 @@ export function NewIssueForm({ onCancel, onSubmit, onDirtyChange }: Props) {
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (!title.trim()) {
-      setError("제목을 입력해주세요.");
+      setError(t("common.titleRequired"));
       return;
     }
     setError(null);
@@ -31,7 +33,7 @@ export function NewIssueForm({ onCancel, onSubmit, onDirtyChange }: Props) {
     try {
       await onSubmit({ title: title.trim(), body: body.trim(), priority });
     } catch (err) {
-      setError(err instanceof Error ? err.message : "이슈를 저장하지 못했습니다.");
+      setError(err instanceof Error ? err.message : t("newIssueForm.saveFailed"));
     } finally {
       setSaving(false);
     }
@@ -39,21 +41,21 @@ export function NewIssueForm({ onCancel, onSubmit, onDirtyChange }: Props) {
 
   return (
     <form className="new-issue-form" onSubmit={handleSubmit}>
-      <h2>새 이슈 만들기</h2>
+      <h2>{t("newIssueForm.heading")}</h2>
       <label>
-        제목
+        {t("newIssueForm.titleLabel")}
         <input value={title} onChange={(e) => setTitle(e.target.value)} autoFocus />
       </label>
       <label>
-        내용
+        {t("newIssueForm.bodyLabel")}
         <textarea value={body} onChange={(e) => setBody(e.target.value)} rows={8} />
       </label>
       <label>
-        우선순위
+        {t("newIssueForm.priorityLabel")}
         <select value={priority} onChange={(e) => setPriority(e.target.value as IssuePriority)}>
-          <option value="low">낮음</option>
-          <option value="medium">보통</option>
-          <option value="high">높음</option>
+          <option value="low">{t("common.priority.low")}</option>
+          <option value="medium">{t("common.priority.medium")}</option>
+          <option value="high">{t("common.priority.high")}</option>
         </select>
       </label>
       {error && <p className="form-error">{error}</p>}
@@ -65,10 +67,10 @@ export function NewIssueForm({ onCancel, onSubmit, onDirtyChange }: Props) {
             onCancel();
           }}
         >
-          취소
+          {t("common.cancel")}
         </button>
         <button type="submit" className="primary" disabled={saving}>
-          {saving ? "저장 중..." : "저장"}
+          {saving ? t("common.saving") : t("common.save")}
         </button>
       </div>
     </form>
