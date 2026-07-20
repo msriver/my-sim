@@ -1,6 +1,6 @@
 {
   "name": "my-sim",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "Simple Issue Management - a local, offline issue tracker (Electron desktop app) that can launch Claude Code against a target project.",
   "private": true,
   "license": "MIT",
