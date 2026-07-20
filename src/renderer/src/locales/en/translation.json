@@ -135,5 +135,20 @@
     "restoring": "Restoring...",
     "close": "Close",
     "restoreFailed": "Failed to restore."
+  },
+  "about": {
+    "checkUpdate": "Check for Updates",
+    "checking": "Checking...",
+    "proceedUpdate": "Proceed with Update",
+    "upToDate": "You're on the latest version.",
+    "updateAvailable": "New version {{latestVersion}} available",
+    "releaseNotesLink": "View release notes",
+    "checkFailed": "Failed to check for updates: {{message}}",
+    "downloading": "Downloading... ({{percent}}%)",
+    "readyToInstall": "Download complete. Ready to restart and install.",
+    "restartAndInstall": "Restart and Install",
+    "installBlocked": "Cannot update while a session is running — stop the session first. ({{liveSessionCount}} running session(s))",
+    "installError": "Failed to install the update: {{message}}",
+    "close": "Close"
   }
 }

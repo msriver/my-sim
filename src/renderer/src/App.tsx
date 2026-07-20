@@ -10,6 +10,7 @@ import { Terminal } from "./components/Terminal";
 import { SettingsView } from "./components/SettingsView";
 import { ConfirmDialog } from "./components/ConfirmDialog";
 import { TrashView } from "./components/TrashView";
+import { AboutView } from "./components/AboutView";
 
 type View = "detail" | "new" | "edit" | "terminal";
 
@@ -28,6 +29,7 @@ export default function App() {
   const [language, setLanguage] = useState<Config["language"]>("en");
   const [showSettings, setShowSettings] = useState(false);
   const [showTrash, setShowTrash] = useState(false);
+  const [showAbout, setShowAbout] = useState(false);
   const [deleteTarget, setDeleteTarget] = useState<Issue | null>(null);
   const [toasts, setToasts] = useState<Toast[]>([]);
   const toastTimers = useRef<Map<number, ReturnType<typeof setTimeout>>>(new Map());
@@ -291,6 +293,14 @@ export default function App() {
           >
             {t("app.header.settings")}
           </button>
+          <button
+            onClick={() => {
+              console.log("[ui] 정보 열기");
+              setShowAbout(true);
+            }}
+          >
+            About
+          </button>
         </div>
       </header>
       <div className="app-body">
@@ -413,6 +423,8 @@ export default function App() {
       {showTrash && (
         <TrashView onRestore={handleRestore} onClose={() => setShowTrash(false)} />
       )}
+
+      {showAbout && <AboutView onClose={() => setShowAbout(false)} />}
 
       {pendingNavigation && (
         <ConfirmDialog

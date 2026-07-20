@@ -4,13 +4,14 @@
   "description": "Simple Issue Management - a local, offline issue tracker (Electron desktop app) that can launch Claude Code against a target project.",
   "private": true,
   "license": "MIT",
+  "author": "msriver",
   "type": "module",
   "main": "./out/main/index.js",
   "scripts": {
     "dev": "electron-vite dev",
     "build": "electron-vite build",
     "start": "electron-vite preview",
-    "dist": "electron-vite build && electron-builder --win"
+    "dist": "electron-vite build && electron-builder --win --publish never"
   },
   "build": {
     "appId": "com.msriver.my-sim",
@@ -29,6 +30,11 @@
     "asarUnpack": [
       "**/node_modules/node-pty/**"
     ],
+    "publish": {
+      "provider": "github",
+      "owner": "msriver",
+      "repo": "my-sim"
+    },
     "win": {
       "target": "nsis"
     }
@@ -36,6 +42,7 @@
   "dependencies": {
     "@xterm/addon-fit": "^0.10.0",
     "@xterm/xterm": "^5.5.0",
+    "electron-updater": "^6.8.9",
     "gray-matter": "^4.0.3",
     "i18next": "^26.3.6",
     "marked": "^18.0.6",
