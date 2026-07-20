@@ -561,6 +561,12 @@ select option {
   color: var(--text-dim);
 }
 
+.about-info {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
 .about-update {
   display: flex;
   flex-direction: column;

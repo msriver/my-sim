@@ -21,8 +21,7 @@
   "app": {
     "header": {
       "trash": "🗑 Trash",
-      "settings": "⚙ Settings",
-      "about": "ℹ About"
+      "settings": "⚙ Settings"
     },
     "sidebar": {
       "newIssue": "+ New Issue",
@@ -138,18 +137,13 @@
     "restoreFailed": "Failed to restore."
   },
   "about": {
-    "heading": "About",
-    "version": "v{{version}}",
-    "license": "MIT License",
-    "author": "Author: {{author}}",
-    "repoLink": "GitHub Repository",
     "checkUpdate": "Check for Updates",
     "checking": "Checking...",
+    "proceedUpdate": "Proceed with Update",
     "upToDate": "You're on the latest version.",
     "updateAvailable": "New version {{latestVersion}} available",
     "releaseNotesLink": "View release notes",
     "checkFailed": "Failed to check for updates: {{message}}",
-    "downloadUpdate": "Update",
     "downloading": "Downloading... ({{percent}}%)",
     "readyToInstall": "Download complete. Ready to restart and install.",
     "restartAndInstall": "Restart and Install",

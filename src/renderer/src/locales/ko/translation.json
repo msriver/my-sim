@@ -21,8 +21,7 @@
   "app": {
     "header": {
       "trash": "🗑 휴지통",
-      "settings": "⚙ 환경설정",
-      "about": "ℹ 정보"
+      "settings": "⚙ 환경설정"
     },
     "sidebar": {
       "newIssue": "+ 새 이슈",
@@ -138,18 +137,13 @@
     "restoreFailed": "복구하지 못했습니다."
   },
   "about": {
-    "heading": "정보",
-    "version": "v{{version}}",
-    "license": "MIT License",
-    "author": "만든이: {{author}}",
-    "repoLink": "GitHub 저장소",
     "checkUpdate": "업데이트 확인",
     "checking": "확인 중...",
+    "proceedUpdate": "업데이트 진행",
     "upToDate": "최신 버전입니다.",
     "updateAvailable": "새 버전 {{latestVersion}} 사용 가능",
     "releaseNotesLink": "릴리즈 노트 보기",
     "checkFailed": "업데이트 확인에 실패했습니다: {{message}}",
-    "downloadUpdate": "업데이트 하기",
     "downloading": "다운로드 중... ({{percent}}%)",
     "readyToInstall": "다운로드가 완료되었습니다. 재시작하여 설치할 수 있습니다.",
     "restartAndInstall": "재시작하여 설치",

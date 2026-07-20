@@ -299,7 +299,7 @@ export default function App() {
               setShowAbout(true);
             }}
           >
-            {t("app.header.about")}
+            About
           </button>
         </div>
       </header>

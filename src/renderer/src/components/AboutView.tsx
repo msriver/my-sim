@@ -77,6 +77,31 @@ export function AboutView({ onClose }: Props) {
     window.api.update.download();
   }
 
+  // Single merged check/download button: label, handler, and disabled state all
+  // derive from updateState. Returns null for readyToInstall, where this button
+  // is hidden and the separate "재시작하여 설치" button below takes over.
+  function getUpdateButton(): { label: string; onClick: () => void; disabled: boolean } | null {
+    switch (updateState) {
+      case "checking":
+        return { label: t("about.checking"), onClick: handleCheckUpdate, disabled: true };
+      case "available":
+        return { label: t("about.proceedUpdate"), onClick: handleDownloadUpdate, disabled: false };
+      case "downloading":
+        return {
+          label: t("about.downloading", { percent: Math.round(progress) }),
+          onClick: handleDownloadUpdate,
+          disabled: true
+        };
+      case "readyToInstall":
+        return null;
+      case "idle":
+      case "upToDate":
+      case "error":
+      default:
+        return { label: t("about.checkUpdate"), onClick: handleCheckUpdate, disabled: false };
+    }
+  }
+
   async function handleInstall() {
     console.log("[ui] \"재시작하여 설치\" 클릭");
     setInstallBlockedCount(null);
@@ -99,21 +124,31 @@ export function AboutView({ onClose }: Props) {
   return (
     <div className="modal-overlay" onClick={handleClose}>
       <div className="modal-box" role="dialog" aria-modal="true" onClick={(e) => e.stopPropagation()}>
-        <h2>{t("about.heading")}</h2>
-        <p>{APP_NAME}</p>
-        <p>{version && t("about.version", { version })}</p>
-        <p>{t("about.license")}</p>
-        <p>{t("about.author", { author: AUTHOR })}</p>
-        <p>
-          <a target="_blank" rel="noreferrer" href={REPO_URL}>
-            {t("about.repoLink")}
-          </a>
-        </p>
+        <h2>About</h2>
+        <div className="about-info">
+          <div>{APP_NAME}</div>
+          {version && <div>Version: {version}</div>}
+          <div>License: MIT</div>
+          <div>
+            Author: {AUTHOR} (
+            <a target="_blank" rel="noreferrer" href={REPO_URL}>
+              GitHub
+            </a>
+            )
+          </div>
+        </div>
 
         <div className="about-update">
-          <button type="button" onClick={handleCheckUpdate} disabled={updateState === "checking"}>
-            {updateState === "checking" ? t("about.checking") : t("about.checkUpdate")}
-          </button>
+          {(() => {
+            const updateButton = getUpdateButton();
+            return (
+              updateButton && (
+                <button type="button" onClick={updateButton.onClick} disabled={updateButton.disabled}>
+                  {updateButton.label}
+                </button>
+              )
+            );
+          })()}
 
           {updateState === "upToDate" && <p>{t("about.upToDate")}</p>}
 
@@ -132,12 +167,6 @@ export function AboutView({ onClose }: Props) {
               {t(errorSource === "check" ? "about.checkFailed" : "about.installError", { message: errorMessage })}
             </p>
           )}
-
-          <button type="button" onClick={handleDownloadUpdate} disabled={updateState !== "available"}>
-            {t("about.downloadUpdate")}
-          </button>
-
-          {updateState === "downloading" && <p>{t("about.downloading", { percent: Math.round(progress) })}</p>}
 
           {updateState === "readyToInstall" && (
             <>
